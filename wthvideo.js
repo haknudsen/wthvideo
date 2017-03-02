@@ -75,36 +75,36 @@ function wthplayer() {
         case "o":
             break;
         default:
-            left += "px"
+            left += "px";
     }
     if (divTop !== "auto") {
-        divTop += "px"
+        divTop += "px";
     }
     if (right !== "auto") {
-        right += "px"
+        right += "px";
     }
     if (centeroffset !== "auto") {
-        centeroffset += "px"
+        centeroffset += "px";
     }
     if (bottom !== "auto") {
-        bottom += "px"
+        bottom += "px";
     }
-    ua.includes("iphone os 10") ? i10 = !0 : ("iPad" !== platform && "iPhone" !== platform && "iPod" !== platform || (iOS = !0), (iOS || isAndroid || null !== isMobileDevice) && (isDevice = !0));;
+    ua.includes("iphone os 10") ? i10 = !0 : ("iPad" !== platform && "iPhone" !== platform && "iPod" !== platform || (iOS = !0), (iOS || isAndroid || null !== isMobileDevice) && (isDevice = !0));
     if (!isDevice) {
-        hVideo = path + "/" + canvasVideo + ".mp4"
+        hVideo = path + "/" + canvasVideo + ".mp4";
     } else {
-        hVideo = path + "/" + h264 + ".mp4"
+        hVideo = path + "/" + h264 + ".mp4";
     }
     hasSeenSS = sessionStorage.getItem(hasSeen);
     hasSeenLS = localStorage.getItem(hasSeen);
     if (hasSeenLS === null) {
         if (autostart !== "no" || autostart === "mute") {
             toPlay = !0;
-            autostart = "yes"
+            autostart = "yes";
         }
     } else {
         oncepersessionSwitch();
-        autostartSwitch()
+        autostartSwitch();
     }
     if (hasSeenSS !== null) {
         switch (autostart) {
@@ -118,17 +118,17 @@ function wthplayer() {
             case "oncethenpic":
             case "onceonlythenpic":
                 autostart = "no";
-                break
+                break;
         }
     }
     sessionStorage.setItem(hasSeen, !0);
     localStorage.setItem(hasSeen, !0);
     if (toPlay === !0) {
         setTimeout(function () {
-            createDiv()
-        }, delay)
+            createDiv();
+        }, delay);
     } else {
-        return
+        return;
     }
 
     function autostartSwitch() {
@@ -140,7 +140,7 @@ function wthplayer() {
                 autostart = "no";
                 break;
             default:
-                break
+                break;
         }
     }
 
@@ -148,21 +148,21 @@ function wthplayer() {
         switch (oncepersession) {
             case "yes":
                 if (hasSeenSS === "true") {
-                    toPlay = !1
+                    toPlay = !1;
                 } else {
-                    toPlay = !0
+                    toPlay = !0;
                 }
                 break;
             case "onceonly":
                 if (hasSeenLS === "true") {
-                    toPlay = !1
+                    toPlay = !1;
                 } else {
-                    toPlay = !0
+                    toPlay = !0;
                 }
                 break;
             default:
                 toPlay = !0;
-                break
+                break;
         }
     }
 
@@ -173,7 +173,7 @@ function wthplayer() {
             createTH.style.left = "50%";
             createTH.style.marginLeft = (width / 2) * -1 + "px";
             createTH.style.top = "auto";
-            createTH.style.bottom = 0
+            createTH.style.bottom = 0;
         } else {
             createTH = document.createElement("div");
             createTH.id = "wthvideo";
@@ -230,33 +230,25 @@ function wthplayer() {
         v.setAttribute("playsinline", "playsinline");
         v.src = hVideo;
         v.zIndex = 1;
-        if (isDevice) {
-            v.poster = actorGif
-        } else {
-            v.poster = actorGif;
-            v.style.display = "none"
-        }
+        v.poster = actorGif;
+        v.style.display = "none";
         v.volume = volume;
         v.style.width = width + "px";
         if (toLoop) {
-            v.loop = !0
+            v.loop = !0;
         }
         if (toMute) {
             v.muted = !0;
             if (autostart !== "loop") {
-                startBtnCreate()
+                startBtnCreate();
             }
         }
-        if (!isDevice) {
-            v.style.height = height * 2 + "px"
-        } else {
-            v.style.height = height + "px"
-        }
+        v.style.height = height + "px";
         thv.appendChild(v);
         thplayer = document.getElementById("talkinghead");
         var p = document.createElement("p");
         p.innerHTML = "Your Browser does not support the <video> tag";
-        v.appendChild(p)
+        v.appendChild(p);
     }
 
     function createCanvas() {
@@ -274,7 +266,7 @@ function wthplayer() {
         thc.id = "talkingCanvas";
         thc.width = width;
         thc.height = height * 2;
-        thv.appendChild(thc)
+        thv.appendChild(thc);
     }
 
     function createControls() {
@@ -295,7 +287,7 @@ function wthplayer() {
             newI.style.zIndex = 10020;
             dv = document.getElementById("playholder");
             var windowClose = newI;
-            dv.appendChild(windowClose)
+            dv.appendChild(windowClose);
         }
         newP = document.createElement("div");
         newP.id = "PlayerBar";
@@ -307,11 +299,7 @@ function wthplayer() {
         newP.style.marginTop = "0px";
         newP.style.left = playerBarMargin + "px";
         newP.style.bottom = "0px";
-        if (isDevice) {
-            newP.style.position = "absolute"
-        } else {
-            newP.style.position = "relative"
-        }
+        newP.style.position = "relative";
         newP.style.zIndex = 10020;
         newP.style.background = color;
         newP.style.border = "2px solid " + rgb2hex(color);
@@ -332,9 +320,9 @@ function wthplayer() {
         createTH.style.width = btnWidth;
         createTH.id = "muteBtn";
         if (document.getElementById("talkinghead").muted) {
-            createTH.src = buttonPath + "VolumeBtnMute.png"
+            createTH.src = buttonPath + "VolumeBtnMute.png";
         } else {
-            createTH.src = buttonPath + "VolumeBtn.png"
+            createTH.src = buttonPath + "VolumeBtn.png";
         }
         createTH.style.float = "left";
         dv = document.getElementById("PlayerBar");
@@ -397,9 +385,9 @@ function wthplayer() {
                 imageData = image.data,
                 alphaData = buffer.getImageData(0, height, width, height).data;
             for (var i = 3, len = imageData.length; i < len; i = i + 4) {
-                imageData[i] = alphaData[i - 1]
+                imageData[i] = alphaData[i - 1];
             }
-            ctx.putImageData(image, 0, 0, 0, 0, width, height)
+            ctx.putImageData(image, 0, 0, 0, 0, width, height);
         } catch (err) {}
     }
 
@@ -408,20 +396,20 @@ function wthplayer() {
             thplayer.oncanplay = function () {
                 if (thplayer.paused === !0) {
                     autostart = "cant auto play";
-                    addBackground()
+                    addBackground();
                 }
-            }
+            };
         }
         if (autostart === "yes" || toLoop === !0) {
             thplayer.autoplay = !0;
             document.getElementById("PlayPauseBtn").src = buttonPath + "PauseBtn.png";
             document.getElementById("PlayerBar").style.opacity = "1";
-            startPlaying()
+            startPlaying();
         } else {
-            addBackground()
+            addBackground();
         }
         if (exitoncomplete === "yes") {
-            thplayer.addEventListener("ended", closePlayer, !1)
+            thplayer.addEventListener("ended", closePlayer, !1);
         }
     }
 
@@ -444,10 +432,10 @@ function wthplayer() {
                     case "htmlClose":
                     case "imgLnk":
                         e.target.style.opacity = 1;
-                        break
+                        break;
                 }
             }
-            e.stopPropagation()
+            e.stopPropagation();
         }
 
         function overVideo(e) {
@@ -465,25 +453,25 @@ function wthplayer() {
                     case "imgLnk":
                         e.target.style.opacity = 0.5;
                         document.getElementById("PlayerBar").style.marginTop = playerBarMarginBase;
-                        break
+                        break;
                 }
             }
-            e.stopPropagation()
+            e.stopPropagation();
         }
 
         function doSomething(e) {
             if (e.target !== e.currentTarget) {
                 if (toMute) {
-                    removeMuted()
+                    removeMuted();
                 }
                 switch (e.target.id) {
                     case "PlayPauseBtn":
                         if (spokespersonImage) {
                             if (spokespersonImage.style.display === "none") {
-                                playToggle()
+                                playToggle();
                             }
                         } else {
-                            playToggle()
+                            playToggle();
                         }
                         break;
                     case "muteBtn":
@@ -503,12 +491,12 @@ function wthplayer() {
                     case "talkingCanvas":
                     case "talkinghead":
                         if (vidLink !== "") {
-                            openLink()
+                            openLink();
                         } else {
                             try {
-                                document.getElementById("click-to-play").parentNode.removeChild(document.getElementById("click-to-play"))
+                                document.getElementById("click-to-play").parentNode.removeChild(document.getElementById("click-to-play"));
                             } catch (err) {}
-                            playToggle()
+                            playToggle();
                         }
                         break;
                     case "imgLnk":
@@ -518,41 +506,39 @@ function wthplayer() {
                         break;
                     case "talkinghead":
                         if (platform === "iPhone") {
-                            iPhonePlay()
+                            iPhonePlay();
                         } else {
-                            openLink()
+                            openLink();
                         }
-                        break
+                        break;
                 }
             }
-            e.stopPropagation()
+            e.stopPropagation();
         }
         try {
-            thplayer.addEventListener("ended", videoEnded, !1)
+            thplayer.addEventListener("ended", videoEnded, !1);
         } catch (err) {}
         try {
-            iPhoneVideo.addEventListener("ended", iPhoneEnded, !1)
+            iPhoneVideo.addEventListener("ended", iPhoneEnded, !1);
         } catch (err) {}
     }
 
     function setCss3Style(el, prop, val) {
         for (var i = 0, l = vendors.length; i < l; i++) {
-            el.style[toCamelCase(vendors[i] + prop)] = val
+            el.style[toCamelCase(vendors[i] + prop)] = val;
         }
     }
 
     function toCamelCase(str) {
         return str.toLowerCase().replace(/(\-[a-z])/g, function ($1) {
-            return $1.toUpperCase().replace("-", "")
-        })
+            return $1.toUpperCase().replace("-", "");
+        });
     }
 
     function videoEnded() {
         document.getElementById("PlayPauseBtn").src = buttonPath + "PlayBtn.png";
         if (exitoncomplete === "yes") {
-            closePlayer()
-        } else if (isDevice) {
-            startBtnCreate()
+            closePlayer();
         } else {
             addBackground()
         }
@@ -560,34 +546,29 @@ function wthplayer() {
 
     function playClick() {
         try {
-            spokespersonImage.style.display = "none"
+            spokespersonImage.style.display = "none";
         } catch (err) {}
         try {
-            document.getElementById("click-to-play").parentNode.removeChild(document.getElementById("click-to-play"))
+            document.getElementById("click-to-play").parentNode.removeChild(document.getElementById("click-to-play"));
         } catch (err) {}
-        if (isDevice) {
-            thplayer.play();
-            document.getElementById("PlayPauseBtn").src = buttonPath + "PauseBtn.png"
-        } else {
-            startPlaying()
-        }
+        startPlaying();
     }
 
     function playToggle() {
         if (thplayer.paused) {
             thplayer.play();
             document.getElementById("PlayPauseBtn").src = buttonPath + "PauseBtn.png";
-            document.getElementById("PlayerBar").style.opacity = "1"
+            document.getElementById("PlayerBar").style.opacity = "1";
         } else {
             document.getElementById("PlayPauseBtn").src = buttonPath + "PlayBtn.png";
-            thplayer.pause()
+            thplayer.pause();
         }
     }
 
     function muteToggle() {
         if (thplayer.muted) {
             thplayer.muted = !1;
-            document.getElementById("muteBtn").src = buttonPath + "VolumeBtn.png"
+            document.getElementById("muteBtn").src = buttonPath + "VolumeBtn.png";
         } else {
             document.getElementById("muteBtn").src = buttonPath + "VolumeBtnMute.png";
             thplayer.muted = !0
@@ -598,16 +579,16 @@ function wthplayer() {
         thplayer.currentTime = 0;
         document.getElementById("PlayPauseBtn").src = buttonPath + "PauseBtn.png";
         playClick();
-        thplayer.play()
+        thplayer.play();
     }
 
     function closePlayer() {
         thplayer.pause();
         clearInterval(playingS);
         try {
-            thv.parentNode.removeChild(document.getElementById("wthvideo"))
+            thv.parentNode.removeChild(document.getElementById("wthvideo"));
         } catch (err) {}
-        return
+        return;
     }
 
     function addBackground() {
@@ -622,7 +603,7 @@ function wthplayer() {
         spokespersonImage.style.zIndex = 100;
         thv.insertBefore(spokespersonImage, thv.firstChild);
         spokespersonImage = document.getElementById("spokespersonImage");
-        startBtnCreate()
+        startBtnCreate();
     }
 
     function startBtnCreate() {
@@ -637,7 +618,7 @@ function wthplayer() {
         startBtn.style.cursor = "pointer";
         startBtn.style.position = "absolute";
         if (toMute) {
-            thv.appendChild(startBtn)
+            thv.appendChild(startBtn);
         } else {
             spokespersonImage.appendChild(startBtn)
         }
