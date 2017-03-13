@@ -13,7 +13,6 @@ function wthplayer() {
     "use strict";
     //Variables for Player
     var responsive = "no", //You must place <div id="wthvideo"></div> inside the div you want the video to be in.
-        iPhoneWidth = "320", //When the above happens, the witdh of the image
         width = "320", //video width
         height = "320", //video height
         position = "fixed", //fixed or absolute positioning
@@ -59,7 +58,7 @@ function wthplayer() {
         playerBarMarginBase = ((playerBarHeight + 6) * (-1)) + "px",
         playerBarMargin = (width - playerBarWidth) / 2,
         hasSeenLS, hasSeenSS = !1,
-        theParent, actorGif, iPhoneVideo, clickImage, thplayer, spokespersonImage, thb, thv, PlayerBar, newP, playerClose, restartBtn, muteBtn, createTH, dv, playingS, outputCanvas, theCanvas, thc, imgLink = null,
+        theParent, actorGif, iPhoneVideo, clickImage, thplayer, spokespersonImage, thb, thv, PlayerBar, newP, playerClose, restartBtn, muteBtn, createTH, dv, playingS, outputCanvas, theCanvas, thc = null,
         vendors = ["-moz-", "-webkit-", "-o-", "-ms-", "-khtml-", ""],
         i10, toLoop, toMute = !1,
         toPlay = true,
@@ -89,7 +88,7 @@ function wthplayer() {
     if (bottom !== "auto") {
         bottom += "px";
     }
-    ua.includes("iphone os 10") ? i10 = !0 : ("iPad" !== platform && "iPhone" !== platform && "iPod" !== platform || (iOS = !0), (iOS || isAndroid || null !== isMobileDevice) && (isDevice = !0));
+    ua.includes("iphone os 10") ? i10 = true : ("iPad" !== platform && "iPhone" !== platform && "iPod" !== platform || (iOS = true), (iOS || isAndroid || null !== isMobileDevice) && (isDevice = true));
     if (!isDevice) {
         hVideo = path + "/" + canvasVideo + ".mp4";
     } else {
@@ -99,7 +98,7 @@ function wthplayer() {
     hasSeenLS = localStorage.getItem(hasSeen);
     if (hasSeenLS === null) {
         if (autostart !== "no" || autostart === "mute") {
-            toPlay = !0;
+            toPlay = true;
             autostart = "yes";
         }
     } else {
@@ -111,8 +110,8 @@ function wthplayer() {
             case "oncethenmute":
             case "mute":
             case "loop":
-                toLoop = !0;
-                toMute = !0;
+                toLoop = true;
+                toMute = true;
                 autostart = "mute";
                 break;
             case "oncethenpic":
@@ -123,7 +122,7 @@ function wthplayer() {
     }
     sessionStorage.setItem(hasSeen, !0);
     localStorage.setItem(hasSeen, !0);
-    if (toPlay === !0) {
+    if (toPlay === true) {
         setTimeout(function () {
             createDiv();
         }, delay);
@@ -150,18 +149,18 @@ function wthplayer() {
                 if (hasSeenSS === "true") {
                     toPlay = !1;
                 } else {
-                    toPlay = !0;
+                    toPlay = true;
                 }
                 break;
             case "onceonly":
                 if (hasSeenLS === "true") {
                     toPlay = !1;
                 } else {
-                    toPlay = !0;
+                    toPlay = true;
                 }
                 break;
             default:
-                toPlay = !0;
+                toPlay = true;
                 break;
         }
     }
@@ -235,10 +234,10 @@ function wthplayer() {
         v.volume = volume;
         v.style.width = width + "px";
         if (toLoop) {
-            v.loop = !0;
+            v.loop = true;
         }
         if (toMute) {
-            v.muted = !0;
+            v.muted = true;
             if (autostart !== "loop") {
                 startBtnCreate();
             }
@@ -392,16 +391,16 @@ function wthplayer() {
     }
 
     function HTML5Autostart() {
-        if (autostart === "yes" || toLoop === !0) {
+        if (autostart === "yes" || toLoop === true) {
             thplayer.oncanplay = function () {
-                if (thplayer.paused === !0) {
+                if (thplayer.paused === true) {
                     autostart = "cant auto play";
                     addBackground();
                 }
             };
         }
-        if (autostart === "yes" || toLoop === !0) {
-            thplayer.autoplay = !0;
+        if (autostart === "yes" || toLoop === true) {
+            thplayer.autoplay = true;
             document.getElementById("PlayPauseBtn").src = buttonPath + "PauseBtn.png";
             document.getElementById("PlayerBar").style.opacity = "1";
             startPlaying();
@@ -571,7 +570,7 @@ function wthplayer() {
             document.getElementById("muteBtn").src = buttonPath + "VolumeBtn.png";
         } else {
             document.getElementById("muteBtn").src = buttonPath + "VolumeBtnMute.png";
-            thplayer.muted = !0
+            thplayer.muted = true;
         }
     }
 
@@ -622,56 +621,13 @@ function wthplayer() {
         } else {
             spokespersonImage.appendChild(startBtn)
         }
-        clickImage = document.getElementById("click-to-play")
-    }
-
-    function iPhoneCreate() {
-        imgLink = document.createElement("div");
-        imgLink.style.width = iPhoneWidth + "px";
-        imgLink.style.cursor = "pointer";
-        imgLink.id = "imgLnk";
-        imgLink.style.left = (width - iPhoneWidth) / 2 + "px";
-        imgLink.style.top = "0px";
-        iPhoneVideo = document.createElement("VIDEO");
-        iPhoneVideo.id = "talkinghead";
-        iPhoneVideo.src = hVideo;
-        iPhoneVideo.style.width = iPhoneWidth + "px";
-        iPhoneVideo.style.display = "none";
-        iPhoneVideo.style.bottom = "0px";
-        iPhoneVideo.style.left = "0px";
-        iPhoneVideo.style.width = "0px";
-        iPhoneVideo.style.position = "absolute";
-        var img = document.createElement("img");
-        img.src = actorGif;
-        img.id = "Spokesperson";
-        img.style.width = iPhoneWidth + "px";
-        img.style.position = "absolute";
-        var btnImg = document.createElement("img");
-        btnImg.id = "videoBtn";
-        btnImg.src = hBtn;
-        btnImg.style.top = iPhoneWidth / 2 + "px";
-        btnImg.style.width = iPhoneWidth + "px";
-        btnImg.style.position = "absolute";
-        thv.appendChild(imgLink);
-        imgLink.appendChild(iPhoneVideo);
-        imgLink.appendChild(img);
-        imgLink.appendChild(btnImg);
-        thplayer = document.getElementById("talkinghead")
-    }
-
-    function iPhoneEnded() {
-        iPhoneVideo.style.display = "none"
-    }
-
-    function iPhonePlay() {
-        iPhoneVideo.play();
-        iPhoneVideo.style.display = "inherit"
+        clickImage = document.getElementById("click-to-play");
     }
 
     function openLink() {
         document.getElementById("PlayPauseBtn").src = buttonPath + "PlayBtn.png";
         thplayer.pause();
-        window.open(vidLink, openIn)
+        window.open(vidLink, openIn);
     }
 
     function removeMuted() {
@@ -681,8 +637,8 @@ function wthplayer() {
         thplayer.muted = !1;
         thplayer.loop = !1;
         setTimeout(function () {
-            restartClick()
-        }, 150)
+            restartClick();
+        }, 150);
     }
 
     function rgb2hex(orig) {
@@ -694,7 +650,7 @@ function wthplayer() {
     }
 
     function rgba2opacity(op) {
-        return op.slice(16, 19)
+        return op.slice(16, 19);
     }
 }
 /*
@@ -710,6 +666,7 @@ function wthplayer() {
 */
 this.createjs = this.createjs || {};
 (function () {
+    "use strict";
     var c = createjs.PreloadJS = createjs.PreloadJS || {};
     c.version = "0.6.2";
     c.buildDate = "Thu, 26 Nov 2015 20:44:31 GMT"
@@ -717,6 +674,7 @@ this.createjs = this.createjs || {};
 this.createjs = this.createjs || {};
 createjs.extend = function (c, b) {
     function a() {
+    "use strict";
         this.constructor = c
     }
     return a.prototype = b.prototype, c.prototype = new a
@@ -762,13 +720,13 @@ this.createjs = this.createjs || {};
         this.defaultPrevented = this.cancelable && !0
     };
     b.stopPropagation = function () {
-        this.propagationStopped = !0
+        this.propagationStopped = true
     };
     b.stopImmediatePropagation = function () {
-        this.immediatePropagationStopped = this.propagationStopped = !0
+        this.immediatePropagationStopped = this.propagationStopped = true
     };
     b.remove = function () {
-        this.removed = !0
+        this.removed = true
     };
     b.clone = function () {
         return new c(this.type, this.bubbles, this.cancelable)
@@ -1174,7 +1132,7 @@ this.createjs = this.createjs || {};
                                 n();
                             default:
                                 if (d =
-                                    l, 45 == e && (c = !0, e = h.charCodeAt(++l)), 48 <= e && 57 >= e) {
+                                    l, 45 == e && (c = true, e = h.charCodeAt(++l)), 48 <= e && 57 >= e) {
                                     for (48 == e && (e = h.charCodeAt(l + 1), 48 <= e && 57 >= e) && n(); f > l && (e = h.charCodeAt(l), 48 <= e && 57 >= e); l++);
                                     if (46 == h.charCodeAt(l)) {
                                         for (b = ++l; f > b && (e = h.charCodeAt(b), 48 <= e && 57 >= e); b++);
@@ -1203,11 +1161,11 @@ this.createjs = this.createjs || {};
                         if ("$" == a && n(), "string" == typeof a) {
                             if ("@" == (D ? a.charAt(0) : a[0])) return a.slice(1);
                             if ("[" == a) {
-                                for (d = []; a = z(), "]" != a; b || (b = !0)) b && ("," == a ? (a = z(), "]" == a && n()) : n()), "," == a && n(), d.push(K(a));
+                                for (d = []; a = z(), "]" != a; b || (b = true)) b && ("," == a ? (a = z(), "]" == a && n()) : n()), "," == a && n(), d.push(K(a));
                                 return d
                             }
                             if ("{" == a) {
-                                for (d = {}; a = z(), "}" != a; b || (b = !0)) b && ("," == a ? (a = z(), "}" == a && n()) : n()), "," != a && "string" == typeof a && "@" == (D ? a.charAt(0) : a[0]) && ":" == z() || n(), d[a.slice(1)] = K(z());
+                                for (d = {}; a = z(), "}" != a; b || (b = true)) b && ("," == a ? (a = z(), "}" == a && n()) : n()), "," != a && "string" == typeof a && "@" == (D ? a.charAt(0) : a[0]) && ":" == z() || n(), d[a.slice(1)] = K(z());
                                 return d
                             }
                             n()
@@ -1251,7 +1209,7 @@ this.createjs = this.createjs || {};
             k = !1,
             m = c(e, e.JSON3 = {
                 noConflict: function () {
-                    return k || (k = !0, e.JSON = f, e.JSON3 = g, f = g = null), m
+                    return k || (k = true, e.JSON = f, e.JSON3 = g, f = g = null), m
                 }
             });
         e.JSON = {
@@ -1345,7 +1303,7 @@ this.createjs = this.createjs || {};
             if (null == b) return a;
             var d = b.indexOf("?"); - 1 < d && (b = b.substr(0, d));
             var e;
-            return c.ABSOLUTE_PATT.test(b) ? a.absolute = !0 : c.RELATIVE_PATT.test(b) && (a.relative = !0), (e = b.match(c.EXTENSION_PATT)) && (a.extension = e[1].toLowerCase()), a
+            return c.ABSOLUTE_PATT.test(b) ? a.absolute = true : c.RELATIVE_PATT.test(b) && (a.relative = true), (e = b.match(c.EXTENSION_PATT)) && (a.extension = e[1].toLowerCase()), a
         },
         formatQueryString: function (b, a) {
             if (null == b) throw Error("You must specify data.");
@@ -1499,7 +1457,7 @@ this.createjs = this.createjs || {};
         this._request.load()
     };
     b.cancel = function () {
-        this.canceled = !0;
+        this.canceled = true;
         this.destroy()
     };
     b.destroy = function () {
@@ -1530,7 +1488,7 @@ this.createjs = this.createjs || {};
     };
     b._sendComplete = function () {
         if (!this._isCanceled()) {
-            this.loaded = !0;
+            this.loaded = true;
             var a = new createjs.Event("complete");
             a.rawResult = this._rawResult;
             null != this._result && (a.result = this._result);
@@ -1647,7 +1605,7 @@ this.createjs = this.createjs || {};
         this._hideTag();
         this._loadTimeout = setTimeout(createjs.proxy(this._handleTimeout, this), this._item.loadTimeout);
         this._tag[this._tagSrcAttribute] = this._item.src;
-        null == this._tag.parentNode && (window.document.body.appendChild(this._tag), this._addedToDOM = !0)
+        null == this._tag.parentNode && (window.document.body.appendChild(this._tag), this._addedToDOM = true)
     };
     b.destroy = function () {
         this._clean();
@@ -1755,7 +1713,7 @@ this.createjs = this.createjs || {};
         return a && this._rawResponse ? this._rawResponse : this._response
     };
     b.cancel = function () {
-        this.canceled = !0;
+        this.canceled = true;
         this._clean();
         this._request.abort()
     };
@@ -1803,7 +1761,7 @@ this.createjs = this.createjs || {};
     };
     b._handleLoad = function () {
         if (!this.loaded) {
-            this.loaded = !0;
+            this.loaded = true;
             var a = this._checkError();
             if (a) return void this._handleError(a);
             if (this._response = this._getResponse(), "arraybuffer" === this._responseType) try {
@@ -1885,7 +1843,7 @@ this.createjs = this.createjs || {};
         this._typeCallbacks = {};
         this._extensionCallbacks = {};
         this.next = null;
-        this.maintainScriptOrder = !0;
+        this.maintainScriptOrder = true;
         this.stopOnError = !1;
         this._maxConnections = 1;
         this._availableLoaders = [createjs.ImageLoader, createjs.JavaScriptLoader, createjs.CSSLoader, createjs.JSONLoader, createjs.JSONPLoader, createjs.SoundLoader, createjs.ManifestLoader, createjs.SpriteSheetLoader, createjs.XMLLoader, createjs.SVGLoader, createjs.BinaryLoader, createjs.VideoLoader,
@@ -1896,7 +1854,7 @@ this.createjs = this.createjs || {};
     }
     var b = createjs.extend(c, createjs.AbstractLoader);
     b.init = function (a, d, b) {
-        this._preferXHR = this.preferXHR = this.useXHR = !0;
+        this._preferXHR = this.preferXHR = this.useXHR = true;
         this.setPreferXHR(a);
         this._paused = !1;
         this._basePath = d;
@@ -1974,7 +1932,7 @@ this.createjs = this.createjs || {};
                         var k = this._currentLoads[g].getItem();
                         if (k.id == c || k.src == c) {
                             this._currentLoads.splice(g, 1)[0].cancel();
-                            b = !0;
+                            b = true;
                             break
                         }
                     }
@@ -2119,8 +2077,8 @@ this.createjs = this.createjs || {};
         };
     b._loadNext = function () {
         if (!this._paused) {
-            this._loadStartWasDispatched || (this._sendLoadStart(), this._loadStartWasDispatched = !0);
-            this._numItems == this._numItemsLoaded ? (this.loaded = !0, this._sendComplete(), this.next && this.next.load && this.next.load()) : this.loaded = !1;
+            this._loadStartWasDispatched || (this._sendLoadStart(), this._loadStartWasDispatched = true);
+            this._numItems == this._numItemsLoaded ? (this.loaded = true, this._sendComplete(), this.next && this.next.load && this.next.load()) : this.loaded = !1;
             for (var a = 0; a < this._loadQueue.length && !(this._currentLoads.length >=
                     this._maxConnections); a++) {
                 var d = this._loadQueue[a];
@@ -2184,7 +2142,7 @@ this.createjs = this.createjs || {};
         if (this.maintainScriptOrder && b.type == createjs.LoadQueue.JAVASCRIPT || b.maintainOrder) {
             a instanceof createjs.JavaScriptLoader && (this._currentlyLoadingScript = !1);
             var c = createjs.indexOf(this._scriptOrder, b);
-            return -1 == c ? !1 : (this._loadedScripts[c] = !0 === d ? !0 : b, this._checkScriptLoadOrder(), !0)
+            return -1 == c ? !1 : (this._loadedScripts[c] = true === d ? !0 : b, this._checkScriptLoadOrder(), !0)
         }
         return !1
     };
@@ -2197,7 +2155,7 @@ this.createjs = this.createjs || {};
                 b.type == createjs.LoadQueue.JAVASCRIPT &&
                     createjs.DomUtils.appendToHead(c);
                 this._processFinishedLoad(b, b._loader);
-                this._loadedScripts[d] = !0
+                this._loadedScripts[d] = true
             }
         }
     };
@@ -2220,7 +2178,7 @@ this.createjs = this.createjs || {};
             if (null == this._loadedScripts[d]) return !1;
             d++
         }
-        return this._currentlyLoadingScript = !0, !0
+        return this._currentlyLoadingScript = true, !0
     };
     b._removeLoadItem = function (a) {
         for (var d = this._currentLoads.length, b = 0; d > b; b++)
@@ -2828,13 +2786,13 @@ this.createjs = this.createjs || {};
         this.defaultPrevented = this.cancelable && !0
     };
     b.stopPropagation = function () {
-        this.propagationStopped = !0
+        this.propagationStopped = true
     };
     b.stopImmediatePropagation = function () {
-        this.immediatePropagationStopped = this.propagationStopped = !0
+        this.immediatePropagationStopped = this.propagationStopped = true
     };
     b.remove = function () {
-        this.removed = !0
+        this.removed = true
     };
     b.clone = function () {
         return new c(this.type, this.bubbles, this.cancelable)
@@ -2918,7 +2876,7 @@ this.createjs = this.createjs || {};
             if (null == b) return a;
             var d = b.indexOf("?"); - 1 < d && (b = b.substr(0, d));
             var e;
-            return c.ABSOLUTE_PATT.test(b) ? a.absolute = !0 : c.RELATIVE_PATT.test(b) && (a.relative = !0), (e = b.match(c.EXTENSION_PATT)) && (a.extension = e[1].toLowerCase()), a
+            return c.ABSOLUTE_PATT.test(b) ? a.absolute = true : c.RELATIVE_PATT.test(b) && (a.relative = true), (e = b.match(c.EXTENSION_PATT)) && (a.extension = e[1].toLowerCase()), a
         },
         formatQueryString: function (b, a) {
             if (null == b) throw Error("You must specify data.");
@@ -3072,7 +3030,7 @@ this.createjs = this.createjs || {};
         this._request.load()
     };
     b.cancel = function () {
-        this.canceled = !0;
+        this.canceled = true;
         this.destroy()
     };
     b.destroy = function () {
@@ -3103,7 +3061,7 @@ this.createjs = this.createjs || {};
     };
     b._sendComplete = function () {
         if (!this._isCanceled()) {
-            this.loaded = !0;
+            this.loaded = true;
             var a = new createjs.Event("complete");
             a.rawResult = this._rawResult;
             null != this._result && (a.result = this._result);
@@ -3220,7 +3178,7 @@ this.createjs = this.createjs || {};
         this._hideTag();
         this._loadTimeout = setTimeout(createjs.proxy(this._handleTimeout, this), this._item.loadTimeout);
         this._tag[this._tagSrcAttribute] = this._item.src;
-        null == this._tag.parentNode && (window.document.body.appendChild(this._tag), this._addedToDOM = !0)
+        null == this._tag.parentNode && (window.document.body.appendChild(this._tag), this._addedToDOM = true)
     };
     b.destroy = function () {
         this._clean();
@@ -3328,7 +3286,7 @@ this.createjs = this.createjs || {};
         return a && this._rawResponse ? this._rawResponse : this._response
     };
     b.cancel = function () {
-        this.canceled = !0;
+        this.canceled = true;
         this._clean();
         this._request.abort()
     };
@@ -3378,7 +3336,7 @@ this.createjs = this.createjs || {};
     };
     b._handleLoad = function () {
         if (!this.loaded) {
-            this.loaded = !0;
+            this.loaded = true;
             var a = this._checkError();
             if (a) return void this._handleError(a);
             if (this._response = this._getResponse(), "arraybuffer" === this._responseType) try {
@@ -3574,7 +3532,7 @@ this.createjs = this.createjs || {};
         if (c._preloadHash[b])
             for (var d = 0, f = c._preloadHash[b].length; f > d; d++) {
                 var g = c._preloadHash[b][d];
-                if (c._preloadHash[b][d] = !0, c.hasEventListener("fileload")) a = new createjs.Event("fileload"),
+                if (c._preloadHash[b][d] = true, c.hasEventListener("fileload")) a = new createjs.Event("fileload"),
                     a.src = g.src, a.id = g.id, a.data = g.data, a.sprite = g.sprite, c.dispatchEvent(a)
             }
     };
@@ -3590,7 +3548,7 @@ this.createjs = this.createjs || {};
         return a.isSupported() ? (c.activePlugin = new a, !0) : !1
     };
     c.registerPlugins = function (a) {
-        c._pluginsRegistered = !0;
+        c._pluginsRegistered = true;
         for (var b = 0, d = a.length; d > b; b++)
             if (c._registerPlugin(a[b])) return !0;
         return !1
@@ -4066,7 +4024,7 @@ this.createjs = this.createjs || {};
     };
     b.register = function (a) {
         var b = this._loaders[a.src];
-        return b && !b.canceled ? this._loaders[a.src] : (this._audioSources[a.src] = !0, this._soundInstances[a.src] = [], b = new this._loaderClass(a), b.on("complete", this._handlePreloadComplete, this), this._loaders[a.src] = b, b)
+        return b && !b.canceled ? this._loaders[a.src] : (this._audioSources[a.src] = true, this._soundInstances[a.src] = [], b = new this._loaderClass(a), b.on("complete", this._handlePreloadComplete, this), this._loaders[a.src] = b, b)
     };
     b.preload = function (a) {
         a.on("error", this._handlePreloadError, this);
@@ -4296,7 +4254,7 @@ this.createjs = this.createjs || {};
         }
     };
     a._isFileXHRSupported = function () {
-        var a = !0,
+        var a = true,
             b = new XMLHttpRequest;
         try {
             b.open("GET", "WebAudioPluginTest.fail", !1)
@@ -4354,7 +4312,7 @@ this.createjs = this.createjs || {};
         }
     };
     a._unlock = function () {
-        a._unlocked || (a.playEmptySound(), "running" == a.context.state && (document.removeEventListener("mousedown", a._unlock, !0), document.removeEventListener("touchend", a._unlock, !0), a._unlocked = !0))
+        a._unlocked || (a.playEmptySound(), "running" == a.context.state && (document.removeEventListener("mousedown", a._unlock, !0), document.removeEventListener("touchend", a._unlock, !0), a._unlocked = true))
     };
     b.toString = function () {
         return "[WebAudioPlugin]"
@@ -4387,7 +4345,7 @@ this.createjs = this.createjs || {};
     c._tagUsed = {};
     c.get = function (a) {
         var b = c._tags[a];
-        return null == b ? (b = c._tags[a] = c._tagPool.get(), b.src = a) : c._tagUsed[a] ? (b = c._tagPool.get(), b.src = a) : c._tagUsed[a] = !0, b
+        return null == b ? (b = c._tags[a] = c._tagPool.get(), b.src = a) : c._tagUsed[a] ? (b = c._tagPool.get(), b.src = a) : c._tagUsed[a] = true, b
     };
     c.set = function (a, b) {
         b == c._tags[a] ? c._tagUsed[a] = !1 : c._tagPool.set(b)
@@ -4447,7 +4405,7 @@ this.createjs = this.createjs || {};
     };
     b._addLooping = function () {
         null == this._playbackResource ||
-            this._audioSpriteStopTime || (this._playbackResource.addEventListener(createjs.HTMLAudioPlugin._AUDIO_SEEKED, this._loopHandler, !1), this._playbackResource.loop = !0)
+            this._audioSpriteStopTime || (this._playbackResource.addEventListener(createjs.HTMLAudioPlugin._AUDIO_SEEKED, this._loopHandler, !1), this._playbackResource.loop = true)
     };
     b._handleCleanUp = function () {
         var a = this._playbackResource;
@@ -4478,7 +4436,7 @@ this.createjs = this.createjs || {};
         this._updateVolume();
         this._playbackResource.currentTime = .001 * (this._startTime + this._position);
         this._audioSpriteStopTime ? this._playbackResource.addEventListener(createjs.HTMLAudioPlugin._TIME_UPDATE, this._audioSpriteEndHandler, !1) : (this._playbackResource.addEventListener(createjs.HTMLAudioPlugin._AUDIO_ENDED,
-            this._endedHandler, !1), 0 != this._loop && (this._playbackResource.addEventListener(createjs.HTMLAudioPlugin._AUDIO_SEEKED, this._loopHandler, !1), this._playbackResource.loop = !0));
+            this._endedHandler, !1), 0 != this._loop && (this._playbackResource.addEventListener(createjs.HTMLAudioPlugin._AUDIO_SEEKED, this._loopHandler, !1), this._playbackResource.loop = true));
         this._playbackResource.play()
     };
     b._handleTagReady = function () {
@@ -4601,8 +4559,8 @@ function Player(c) {
     this.player.playing = !1;
     this.player.muted = !1;
     this.player.started = !1;
-    this.player.stoped = !0;
-    this.player.firstRun = !0;
+    this.player.stoped = true;
+    this.player.firstRun = true;
     this.player.filesAlreadyLoaded = !1;
     this.player.exitOnComplete = !1;
     this.player.delay = 1E3 * this.json.delay;
@@ -4801,15 +4759,15 @@ Player.prototype.setOptionsFromJson = function (c) {
     this.localStorage = localStorage.getItem(this.hasSeen);
     switch (this.sessionMode) {
         case "Play Every Time":
-            "Muted" === this.autoplay ? (this.player.playMuted = !0, this.el.preloadBtn.click()) : "Yes" === this.autoplay && this.el.preloadBtn.click();
+            "Muted" === this.autoplay ? (this.player.playMuted = true, this.el.preloadBtn.click()) : "Yes" === this.autoplay && this.el.preloadBtn.click();
             break;
         case "Once Per Session":
             if (null !== this.sessionStorage && this.sessionStorage) throw Error("Once Per Session");
-            "Muted" === this.autoplay ? (this.player.playMuted = !0, this.el.preloadBtn.click()) : "Yes" === this.autoplay && this.el.preloadBtn.click();
+            "Muted" === this.autoplay ? (this.player.playMuted = true, this.el.preloadBtn.click()) : "Yes" === this.autoplay && this.el.preloadBtn.click();
             break;
         case "Once Only":
             if (null !== this.localStorage) throw Error("Once Only");
-            "Muted" === this.autoplay ? (this.player.playMuted = !0, this.el.preloadBtn.click()) : "Yes" === this.autoplay && this.el.preloadBtn.click()
+            "Muted" === this.autoplay ? (this.player.playMuted = true, this.el.preloadBtn.click()) : "Yes" === this.autoplay && this.el.preloadBtn.click()
     }
     sessionStorage.setItem(this.hasSeen, !0);
     localStorage.setItem(this.hasSeen, !0)
@@ -4869,8 +4827,8 @@ Player.prototype.pauseAnimation = function () {
 };
 Player.prototype.start = function () {
     var c = 0 < arguments.length && void 0 !== arguments[0] ? arguments[0] : !1;
-    this.player.started = !0;
-    this.player.playing = !0;
+    this.player.started = true;
+    this.player.playing = true;
     this.player.stoped = !1;
     this.el.thumbnail.style.display = "none";
     c ? (this.el.playerControls.style.display = "none", this.el.progress.style.display = "none", this.el.preloadBtn.style.display = "block", this.el.preloadControls.style.display = "block", this.el.player.style.animationIterationCount = "infinite") : this.playAudio();
@@ -4878,15 +4836,15 @@ Player.prototype.start = function () {
     this.updateBtnPlayStyle()
 };
 Player.prototype.play = function () {
-    this.player.started = !0;
-    this.player.playing = !0;
+    this.player.started = true;
+    this.player.playing = true;
     this.player.stoped = !1;
     this.updateBtnPlayStyle();
     this.playAnimation();
     this.resumeAudio()
 };
 Player.prototype.pause = function () {
-    this.player.started = !0;
+    this.player.started = true;
     this.player.playing = !1;
     this.player.stoped = !1;
     this.updateBtnPlayStyle();
@@ -4906,7 +4864,7 @@ Player.prototype.repeat = function () {
 Player.prototype.stop = function () {
     this.player.started = !1;
     this.player.playing = !1;
-    this.player.stoped = !0;
+    this.player.stoped = true;
     this.el.thumbnail.style.display = "block";
     this.el.player.style.animationPlayState = "";
     this.stopAnimation();
@@ -4934,14 +4892,14 @@ Player.prototype.resumeAudio = function () {
     this.player.audio.instance.paused = !1
 };
 Player.prototype.pauseAudio = function () {
-    this.player.audio.instance.paused = !0
+    this.player.audio.instance.paused = true
 };
 Player.prototype.stopAudio = function () {
     this.player.audio.instance.stop()
 };
 Player.prototype.mute = function () {
-    this.player.audio.instance.muted = !0;
-    this.player.muted = !0;
+    this.player.audio.instance.muted = true;
+    this.player.muted = true;
     this.updateBtnMuteUnmuteStyle()
 };
 Player.prototype.unmute = function () {
@@ -4973,8 +4931,8 @@ Player.prototype.preload = function () {
 };
 Player.prototype.onFileLoad = function (c) {
     c = c.item;
-    "audio" == c.id && (this.isAudioLoaded = !0);
-    "spriteSheet" == c.id && (this.el.player.style.willChange = "background, background-position", this.isSriteSheetLoaded = !0);
+    "audio" == c.id && (this.isAudioLoaded = true);
+    "spriteSheet" == c.id && (this.el.player.style.willChange = "background, background-position", this.isSriteSheetLoaded = true);
     if (this.isSriteSheetLoaded && this.isAudioLoaded) this.onPreloadComplete()
 };
 Player.prototype.onPreloadError = function () {
@@ -4998,6 +4956,6 @@ Player.prototype.onPreloadComplete = function () {
             "none";
         this.el.playerControls.style.display = "block";
         this.start(this.player.playMuted);
-        this.player.filesAlreadyLoaded = !0
+        this.player.filesAlreadyLoaded = true
     }.bind(this)
 };
