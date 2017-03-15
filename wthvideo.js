@@ -189,6 +189,7 @@ function wthplayer() {
         createTH.style.zIndex = 9999;
         createTH.style.cursor = "pointer";
         createTH.style.overflow = overflow;
+        isDevice = true;
         if (isDevice) {
             var settings = {
                 "autostart": autostart,
@@ -608,7 +609,7 @@ function wthplayer() {
         startBtn.style.cursor = "pointer";
         startBtn.style.position = "absolute";
         startBtn.style.top = "46%";
-        startBtn.style.left = (width - 160)/2 + "px";
+        startBtn.style.left = (width - 160) / 2 + "px";
         startBtn.style.textAlign = "center";
         startBtn.style.fontSize = "24px";
         startBtn.style.fontWeight = "600";
@@ -4639,13 +4640,21 @@ Player.prototype.initHtml = function (c) {
     this.el.player.appendChild(this.el.preloadControls);
     this.el.preloadBtn = function () {
         var a = document.createElement("div");
-        var setWidth = "200";
-        a.id = "click-to-play";
-        a.innerHTML = "Click to Play";
+        a.id = "click - to-play";
+        a.alt = "Click to Play";
+        a.style.cursor = "pointer";
         a.style.position = "absolute";
-        a.style.top = "55%";
-        a.style.width = setWidth + "px";
-        a.style.left = (this.json.width - setWidth) / 2 + "px";
+        a.style.top = "46%";
+        a.style.textAlign = "center";
+        a.style.fontSize = "24px";
+        a.style.fontWeight = "600";
+        a.innerHTML = "Click to Play";
+        a.style.padding = "12px";
+        a.style.borderRadius = "12px";
+        a.style.borderWidth = "2px";
+        a.style.borderStyle = "solid";
+        a.style.borderColor = c.click_color;
+        a.style.left = (this.json.width - 160) / 2 + "px";
         a.style.margin = "auto";
         return a
     }.call(this);
