@@ -21,7 +21,7 @@ function wthplayer() {
         divTop = "auto",
         bottom = "0",
         centeroffset = "auto", //if centering on page negative numbers are left and positive numbers are right
-        color = "rgba(84,155,255,0.4)", //the color of the player bar.
+        color = "rgba(84,155,255,0.6)", //the color of the player bar.
         volume = "0.8",
         delay = 0, //delay start of video
         controlbar = "mouse", //options for showing the controlbar, yes, no, and mouse
@@ -616,7 +616,6 @@ function wthplayer() {
         startBtn.style.bottom = "30px";
         startBtn.style.cursor = "pointer";
         startBtn.style.position = "absolute";
-<<<<<<< HEAD
         startBtn.style.top = "46%";
         startBtn.style.left = (width - 160) / 2 + "px";
         startBtn.style.textAlign = "center";
@@ -627,8 +626,6 @@ function wthplayer() {
         startBtn.style.background = color;
         startBtn.style.borderRadius = "12px";
         startBtn.style.border = "2px solid " + rgb2hex(color);
-=======
->>>>>>> parent of 4e5699e... changed to CSS click to play button and the newer buttons
         if (toMute) {
             thv.appendChild(startBtn);
         } else {
@@ -4624,6 +4621,7 @@ Player.prototype.initHtml = function (c) {
         a.style.width = "16px";
         a.style.height = "16px";
         a.style.zIndex = "9999";
+        a.style.right = 0;
         a.style.top = 0;
         return a
     }.call(this);
@@ -4650,12 +4648,11 @@ Player.prototype.initHtml = function (c) {
     this.el.player.appendChild(this.el.preloadControls);
     this.el.preloadBtn = function () {
         var a = document.createElement("div");
-<<<<<<< HEAD
-        a.id = "click - to-play";
+        a.id = "click-to-play";
         a.alt = "Click to Play";
         a.style.cursor = "pointer";
         a.style.position = "absolute";
-        a.style.top = "46%";
+        a.style.top = "50%";
         a.style.textAlign = "center";
         a.style.fontSize = "24px";
         a.style.fontWeight = "600";
@@ -4665,14 +4662,9 @@ Player.prototype.initHtml = function (c) {
         a.style.borderWidth = "2px";
         a.style.borderStyle = "solid";
         a.style.borderColor = c.click_color;
-        a.style.left = (this.json.width - 160) / 2 + "px";
-=======
-        a.id = "click-to-play";
-        a.innerHTML = "Click to Play";
-        a.style.position = "absolute";
-        a.style.top = "50%";
+		a.style.width= "200px";
+        a.style.left = (this.json.width - a.style.width) / 2 + "px";
         a.style.left = a.style.right = 0;
->>>>>>> parent of 4e5699e... changed to CSS click to play button and the newer buttons
         a.style.margin = "auto";
         return a
     }.call(this);
