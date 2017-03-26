@@ -57,7 +57,6 @@ function wthplayer() {
         toPlay = true,
         hasSeen = "hasSeen" + canvasVideo;
     hVideo = path + "/" + canvasVideo + ".mp4";
-    btnWidth = btnWidth + "px";
     delay = delay * 1000;
     actorGif = imagePath + actorpic + ".gif";
     buttonPath = imagePath + "buttons" + "/";
@@ -269,6 +268,7 @@ function wthplayer() {
     }
 
     function createControls() {
+        btnWidth = btnWidth + "px";
         var newD = document.createElement("div");
         newD.id = "playholder";
         newD.style.position = "relative";
@@ -4687,12 +4687,19 @@ Player.prototype.initHtml = function(c) {
     this.el.progress = b.progress;
     this.el.progressValue = b.progressValue;
     this.el.preloadControls.appendChild(this.el.progress);
+//---------------------------------------------------------------PlayerBar
     this.el.playerControls = function() {
         var a = document.createElement("div");
         a.id = "PlayerBar";
         a.style.display = "none";
         a.style.left = a.style.right = "0";
+        a.style.position = "absolute";
+        a.style.bottom = "2px";
         a.style.margin = "auto";
+        a.style.padding = "2px 4px";
+        a.style.borderRadius = "8px";
+        a.style.borderStyle = "solid";
+        a.style.borderWidth = "2px";
         return a
     }();
     this.el.player.appendChild(this.el.playerControls);
@@ -4728,14 +4735,6 @@ Player.prototype.initHtml = function(c) {
     }.call(this);
     this.el.playerControls.appendChild(this.el.btnClose);
     this.el.btnClose.addEventListener("click", this.closeBtnClick.bind(this));
-    this.el.btnLogo = function() {
-        var a = document.createElement("img");
-        a.src = this.BUTTONS_PATH + "logo.png";
-        a.classList.add("playerBtns");
-        return a
-    }.call(this);
-    this.el.playerControls.appendChild(this.el.btnLogo);
-    this.el.btnLogo.addEventListener("click", this.logoBtnClick.bind(this));
     for (var b = this.el.player.getElementsByClassName("playerBtns"), a = 0; a < b.length; a++) b[a].addEventListener("mouseover", function() {
         this.style.opacity = .8
     }), b[a].addEventListener("mouseout", function() {
@@ -4756,12 +4755,14 @@ Player.prototype.setOptionsFromJson = function(c) {
     this.el.playerControls.style.borderColor =
         c.bar_color;
     this.el.playerControls.style.backgroundColor = "rgba(" + b(c.bar_color) + ", " + c.bar_opacity + ")";
+    c.btn_size = c.btn_size*1.5;
+    console.log(c.btn_size);
     this.el.btnPlayPause.width = this.el.btnPlayPause.height = c.btn_size;
     this.el.btnReplay.width = this.el.btnReplay.height = c.btn_size;
     this.el.btnMuteUnmute.width = this.el.btnMuteUnmute.height = c.btn_size;
     this.el.btnClose.width = this.el.btnClose.height = c.btn_size;
-    this.el.btnLogo.width = this.el.btnLogo.height = c.btn_size;
-    this.el.playerControls.style.width = 5 * (parseInt(c.btn_size) + 4) + "px";
+    this.el.btnPlayPause.style.margin = this.el.btnReplay.style.margin = this.el.btnMuteUnmute.style.margin = this.el.btnMuteUnmute.style.margin =  this.el.btnClose.style.margin = "2px";
+    this.el.playerControls.style.width = 4 * (parseInt(c.btn_size) + 7) + "px";
     this.player.exitOnComplete =
         c.exit_on_complete;
     this.player.audio.volume = c.volume;
