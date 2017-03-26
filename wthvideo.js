@@ -4602,7 +4602,7 @@ Player.prototype.init = function(c) {
     this.el.preloadControls.style.display = "block"
 };
 Player.prototype.initHtml = function(c) {
-    this.el.player.style.position = "relative";
+    this.el.player.style.position = "absolute";
     this.el.btnCloseMini = function() {
         var a = document.createElement("img");
         a.src = this.BUTTONS_PATH + "exit.png";
@@ -4756,15 +4756,13 @@ Player.prototype.setOptionsFromJson = function(c) {
         c.bar_color;
     this.el.playerControls.style.backgroundColor = "rgba(" + b(c.bar_color) + ", " + c.bar_opacity + ")";
     c.btn_size = c.btn_size*1.5;
-    console.log(c.btn_size);
     this.el.btnPlayPause.width = this.el.btnPlayPause.height = c.btn_size;
     this.el.btnReplay.width = this.el.btnReplay.height = c.btn_size;
     this.el.btnMuteUnmute.width = this.el.btnMuteUnmute.height = c.btn_size;
     this.el.btnClose.width = this.el.btnClose.height = c.btn_size;
     this.el.btnPlayPause.style.margin = this.el.btnReplay.style.margin = this.el.btnMuteUnmute.style.margin = this.el.btnMuteUnmute.style.margin =  this.el.btnClose.style.margin = "2px";
     this.el.playerControls.style.width = 4 * (parseInt(c.btn_size) + 7) + "px";
-    this.player.exitOnComplete =
-        c.exit_on_complete;
+    this.player.exitOnComplete = c.exit_on_complete;
     this.player.audio.volume = c.volume;
     this.sessionMode = c.session_play;
     this.autoplay = c.autostart;
@@ -4884,7 +4882,11 @@ Player.prototype.stop = function() {
     this.stopAnimation();
     this.player.audio.instance.stop();
     this.updateBtnPlayStyle();
-    this.player.exitOnComplete && this.close()
+    if(this.player.exitOnComplete = "no"){
+        console.log('hit');
+    }else{
+        this.close();
+    }
 };
 Player.prototype.close = function() {
     this.player.stoped || this.stopAudio();
