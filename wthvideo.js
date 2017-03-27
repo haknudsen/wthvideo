@@ -25,7 +25,6 @@ function wthplayer() {
 		volume = "0.8",
 		delay = 0, //delay start of video
 		controlbar = "mouse", //options for showing the controlbar, yes, no, and mouse
-		playbtn = "click-to-play.png", //you can set a custom playbuton
 		exitbtn = "yes", //show or not show exitbtn
 		autostart = "yes", //autostart options yes, no, mute, oncethenpic, oncethenmute, onceonlythenpic, onceonlythenmute, and loop
 		exitoncomplete = "no", //option for player to close after video completes. "yes" or "no"
@@ -42,19 +41,17 @@ function wthplayer() {
 		gifBackground = "url('" + gb + ".gif')",
 		buttonPath = imagePath + "buttons" + "/",
 		hVideo = path + "/" + canvasVideo + ".mp4",
-		hBtn = buttonPath + playbtn,
 		leftEnd = left.charAt(left.length - 1),
 		overflow = "hidden",
-		setWidth = 200,
-		playerBarWidth = 132,
 		btnWidth = 32,
-		playerBarHeight = btnWidth + 2,
-		playerBarMarginBase = ((playerBarHeight + 6) * (-1)) + "px",
+		playerBarWidth = (btnWidth + 5) * 4,
+		playerBarHeight = btnWidth+8,
+		playerBarMarginBase = ((playerBarHeight) * (-1)) + "px",
 		playerBarMargin = (width - playerBarWidth) / 2,
 		hasSeenLS, hasSeenSS = false,
-		theParent, actorGif, iPhoneVideo, clickImage, thplayer, spokespersonImage, thb, thv, PlayerBar, newP, playerClose, restartBtn, muteBtn, createTH, dv, playingS, outputCanvas, theCanvas, thc = null,
+		theParent, actorGif, iPhoneVideo, thplayer, spokespersonImage, thb, thv, PlayerBar, newP, playerClose, restartBtn, muteBtn, createTH, dv, playingS, outputCanvas, theCanvas, thc = null,
 		vendors = ["-moz-", "-webkit-", "-o-", "-ms-", "-khtml-", ""],
-		i10, toLoop, toMute = false,
+		toLoop, toMute = false,
 		toPlay = true,
 		hasSeen = "hasSeen" + canvasVideo;
 	hVideo = path + "/" + canvasVideo + ".mp4";
@@ -287,14 +284,21 @@ function wthplayer() {
 			var windowClose = newI;
 			dv.appendChild(windowClose);
 		}
+//add PlayerBar
 		newP = document.createElement("div");
 		newP.id = "PlayerBar";
+		newP.style.position = "relative";
 		newP.style.borderRadius = "8px";
 		newP.style.background = color;
+		newP.style.height = playerBarHeight + "px";
 		newP.style.border = "2px solid " + rgb2hex(color);
+		newP.style.zIndex = 1;
 		newP.style.clear = "both";
+		newP.style.width = playerBarWidth + "px";
+		newP.style.left = playerBarMargin + "px";
 		PlayerBar = newP;
 		thv.appendChild(PlayerBar);
+//add buttons to payerbar
 		createTH = document.createElement("img");
 		createTH.style.maxWidth = btnWidth;
 		createTH.id = "PlayPauseBtn";
@@ -339,6 +343,13 @@ function wthplayer() {
 		dv = document.getElementById("PlayerBar");
 		playerClose = createTH;
 		dv.appendChild(playerClose);
+//--------------------add padding to buttons
+		var nodes = dv.childNodes;
+for(var i=0; i<nodes.length; i++) {
+    if (nodes[i].nodeName.toLowerCase() === 'img') {
+         nodes[i].style.margin = "2px";
+     }
+}
 		addListeners();
 		if ("ontouchstart" in window || controlbar === "yes") {
 			document.getElementById("PlayerBar").style.marginTop = playerBarMarginBase;
@@ -530,7 +541,7 @@ function wthplayer() {
 		if (exitoncomplete === "yes") {
 			closePlayer();
 		} else {
-			addBackground()
+			addBackground();
 		}
 	}
 
@@ -597,33 +608,27 @@ function wthplayer() {
 	}
 
 	function startBtnCreate() {
-		var startBtn = document.createElement("img");
-		startBtn.id = "click-to-play";
-		startBtn.src = hBtn;
-		startBtn.alt = "Click to Play";
-		startBtn.style.zIndex = 100;
-		startBtn.style.width = setWidth + "px";
-		startBtn.style.left = (width - setWidth) / 2 + "px";
-		startBtn.style.bottom = "30px";
-		startBtn.style.cursor = "pointer";
-		startBtn.style.position = "absolute";
-		startBtn.style.top = "46%";
-		startBtn.style.left = (width - 160) / 2 + "px";
-		startBtn.style.textAlign = "center";
-		startBtn.style.fontSize = "24px";
-		startBtn.style.fontWeight = "600";
-		startBtn.innerHTML = "Click to Play";
-		startBtn.style.padding = "12px";
-		startBtn.style.background = color;
-		startBtn.style.borderRadius = "12px";
-		startBtn.style.border = "2px solid " + rgb2hex(color);
-		if (toMute) {
-			thv.appendChild(startBtn);
-		} else {
-			spokespersonImage.appendChild(startBtn)
-		}
-		clickImage = document.getElementById("click-to-play");
-	}
+        var startBtn = document.createElement("DIV");
+        startBtn.id = "click-to-play";
+        startBtn.alt = "Click to Play";
+        startBtn.style.cursor = "pointer";
+        startBtn.style.position = "absolute";
+        startBtn.style.top = "46%";
+        startBtn.style.left = (width - 160) / 2 + "px";
+        startBtn.style.textAlign = "center";
+        startBtn.style.fontSize = "24px";
+        startBtn.style.fontWeight = "600";
+        startBtn.innerHTML = "Click to Play";
+        startBtn.style.padding = "12px";
+        startBtn.style.background = color;
+        startBtn.style.borderRadius = "12px";
+        startBtn.style.border = "2px solid " + rgb2hex(color);
+        if (toMute) {
+            thv.appendChild(startBtn);
+        } else {
+            spokespersonImage.appendChild(startBtn);
+        }
+    }
 
 	function openLink() {
 		document.getElementById("PlayPauseBtn").src = buttonPath + "play.png";
@@ -653,8 +658,8 @@ function wthplayer() {
 	function rgba2opacity(op) {
 		return op.slice(16, 19);
 	}
-}
-/*
+//--------------------------------------------------device---------------------------------------------------
+	/*
  @license PreloadJS
  Visit http://createjs.com/ for documentation, updates and examples.
 
@@ -667,18 +672,16 @@ function wthplayer() {
 */
 this.createjs = this.createjs || {};
 (function () {
-	"use strict";
 	var c = createjs.PreloadJS = createjs.PreloadJS || {};
 	c.version = "0.6.2";
-	c.buildDate = "Thu, 26 Nov 2015 20:44:31 GMT"
+	c.buildDate = "Thu, 26 Nov 2015 20:44:31 GMT";
 })();
 this.createjs = this.createjs || {};
 createjs.extend = function (c, b) {
 	function a() {
-		"use strict";
 		this.constructor = c
 	}
-	return a.prototype = b.prototype, c.prototype = new a
+	return a.prototype = b.prototype, c.prototype = new a;
 };
 this.createjs = this.createjs || {};
 createjs.promote = function (c, b) {
@@ -686,7 +689,7 @@ createjs.promote = function (c, b) {
 		d = Object.getPrototypeOf && Object.getPrototypeOf(a) || a.__proto__;
 	if (d) {
 		a[(b += "_") + "constructor"] = d.constructor;
-		for (var e in d) a.hasOwnProperty(e) && "function" == typeof d[e] && (a[b + e] = d[e])
+		for (var e in d) a.hasOwnProperty(e) && "function" === typeof d[e] && (a[b + e] = d[e])
 	}
 	return c
 };
@@ -1419,6 +1422,7 @@ this.createjs = this.createjs || {};
 	c.GET = "GET";
 	c.BINARY = "binary";
 	c.CSS = "css";
+
 	c.IMAGE = "image";
 	c.JAVASCRIPT = "javascript";
 	c.JSON = "json";
@@ -3628,6 +3632,7 @@ this.createjs = this.createjs || {};
 		function (a, b) {
 			var d = [];
 			a.path && (b ? b += a.path : b = a.path, a = a.manifest);
+
 			for (var c = 0, e = a.length; e > c; c++) d[c] = createjs.Sound.removeSound(a[c].src, b);
 			return d
 		};
@@ -4691,9 +4696,11 @@ Player.prototype.initHtml = function (c) {
 	this.el.playerControls = function () {
 		var a = document.createElement("div");
 		a.id = "PlayerBar";
-		a.style.display = "none";
-		a.style.left = a.style.right = "0";
+		a.style.display = "inline";
+		a.style.position = "absolute";
+		a.style.left = a.style.bottom = a.style.right = "0";
 		a.style.margin = "auto";
+		a.style.borderRadius = "10px";
 		return a
 	}();
 	this.el.player.appendChild(this.el.playerControls);
@@ -4742,6 +4749,10 @@ Player.prototype.initHtml = function (c) {
 	}), b[a].addEventListener("mouseout", function () {
 		this.style.opacity = 1
 	});
+	var myElement = document.getElementsByClassName('playerBtns');
+		myElement.style.width = btnWidth;
+		myElement.style.height = btnWidth;
+		myElement.style.margin = "4px";
 	this.setOptionsFromJson(c)
 };
 Player.prototype.setOptionsFromJson = function (c) {
@@ -4973,3 +4984,5 @@ Player.prototype.onPreloadComplete = function () {
 		this.player.filesAlreadyLoaded = true
 	}.bind(this)
 };
+}
+
