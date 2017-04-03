@@ -24,10 +24,9 @@ function wthplayer() {
         color = "rgba(84,155,255,0.6)", //the color of the player bar.
         volume = "0.8",
         delay = 0, //delay start of video
-        controlbar = "mouse", //options for showing the controlbar, yes, no, and mouse
-        playbtn = "click-to-play.png", //you can set a custom playbuton
+        controlbar = "yes", //options for showing the controlbar, yes, no, and mouse
         exitbtn = "yes", //show or not show exitbtn
-        autostart = "yes", //autostart options yes, no, mute, oncethenpic, oncethenmute, onceonlythenpic, onceonlythenmute, and loop
+        autostart = "no", //autostart options yes, no, mute, oncethenpic, oncethenmute, onceonlythenpic, onceonlythenmute, and loop
         exitoncomplete = "no", //option for player to close after video completes. "yes" or "no"
         oncepersession = "no", //option for number of times video plays "yes", "no", or "onceonly"
         vidLink = "", //make the Talking Heads Player a link. Either leave this set to "no" or you can put a complete URL inside the quotes.
@@ -42,7 +41,6 @@ function wthplayer() {
         gifBackground = "url('" + gb + ".gif')",
         buttonPath = imagePath + "buttons" + "/",
         hVideo = path + "/" + canvasVideo + ".mp4",
-        hBtn = buttonPath + playbtn,
         leftEnd = left.charAt(left.length - 1),
         overflow = "hidden",
         setWidth = 200,
@@ -51,7 +49,7 @@ function wthplayer() {
         playerBarHeight = btnWidth + 2,
         playerBarMarginBase = ((playerBarHeight + 6) * (-1)) + "px",
         hasSeenLS, hasSeenSS = false,
-        theParent, actorGif, iPhoneVideo, clickImage, thplayer, spokespersonImage, thb, thv, PlayerBar, newP, playerClose, restartBtn, muteBtn, createTH, dv, playingS, outputCanvas, theCanvas, thc = null,
+        theParent, actorGif, iPhoneVideo, clickImage, thplayer, spokespersonImage, thb, thv, PlayerBar, bar, playerClose, restartBtn, muteBtn, createTH, dv, playingS, outputCanvas, theCanvas, thc = null,
         vendors = ["-moz-", "-webkit-", "-o-", "-ms-", "-khtml-", ""],
         toLoop, toMute = false,
         toPlay = true,
@@ -268,7 +266,6 @@ function wthplayer() {
     }
 
     function createControls() {
-        btnWidth = btnWidth + "px";
         var newD = document.createElement("div");
         newD.id = "playholder";
         newD.style.position = "relative";
@@ -288,23 +285,30 @@ function wthplayer() {
             var windowClose = newI;
             dv.appendChild(windowClose);
         }
-        newP = document.createElement("div");
-        newP.id = "PlayerBar";
-        newP.style.borderRadius = "8px";
-        newP.style.background = color;
-        newP.style.border = "2px solid " + rgb2hex(color);
-        newP.style.clear = "both";
-        PlayerBar = newP;
+//-------------------------------------------------Player Bar--------------------------------------
+        bar = document.createElement("div");
+        bar.id = "PlayerBar";
+        bar.style.height = btnWidth + 8 + "px";
+        bar.style.width = playerBarHeight*4 + "px";
+        bar.style.left = (width - playerBarHeight*4 )/2+ "px";
+        bar.style.borderRadius = "8px";
+        bar.style.padding = "2px";
+        bar.style.background = color;
+        bar.style.border = "2px solid " + rgb2hex(color);
+        bar.style.zIndex = 99050;
+        bar.style.position = "absolute";
+        PlayerBar = bar;
+        btnWidth = btnWidth + "px";
         thv.appendChild(PlayerBar);
+////////////////////////////////////buttons---------------------------------------------------------
         createTH = document.createElement("img");
         createTH.style.maxWidth = btnWidth;
         createTH.id = "PlayPauseBtn";
         createTH.style.float = "left";
         createTH.src = buttonPath + "play.png";
         createTH.style.position = "relative";
-        createTH.style.zIndex = "inherit";
+        createTH.style.zIndex = 99050;
         dv = document.getElementById("PlayerBar");
-        newP.style.position = "PlayPauseBtn";
         var PlayButton = createTH;
         dv.appendChild(PlayButton);
         createTH = document.createElement("img");
@@ -326,7 +330,7 @@ function wthplayer() {
         createTH.src = buttonPath + "restart.png";
         createTH.style.position = "relative";
         createTH.style.float = "left";
-        createTH.style.zIndex = 10050;
+        createTH.style.zIndex = 99050;
         dv = document.getElementById("PlayerBar");
         restartBtn = createTH;
         dv.appendChild(restartBtn);
@@ -414,7 +418,7 @@ function wthplayer() {
             if (e.target !== e.currentTarget) {
                 switch (e.target.id) {
                     case "talkingCanvas":
-                        document.getElementById("PlayerBar").style.marginTop = "0px";
+                        if(controlbar === "mouse"){document.getElementById("PlayerBar").style.marginTop = "0px";}
                         break;
                     case "PlayPauseBtn":
                     case "muteBtn":
@@ -434,7 +438,7 @@ function wthplayer() {
                 switch (e.target.id) {
 
                     case "talkingCanvas":
-                        document.getElementById("PlayerBar").style.marginTop = playerBarMarginBase;
+                        if(controlbar === "mouse"){document.getElementById("PlayerBar").style.marginTop = playerBarMarginBase;}
                         break;
                     case "PlayPauseBtn":
                     case "muteBtn":
@@ -442,7 +446,7 @@ function wthplayer() {
                     case "playerClose":
                     case "htmlClose":
                     case "imgLnk":
-                        e.target.style.opacity = 0.5;
+                        e.target.style.opacity = 0.8;
                         document.getElementById("PlayerBar").style.marginTop = playerBarMarginBase;
                         break;
                 }
@@ -598,26 +602,27 @@ function wthplayer() {
     }
 
     function startBtnCreate() {
-        var startBtn = document.createElement("img");
+        var startBtn = document.createElement("H3");
         startBtn.id = "click-to-play";
-        startBtn.src = hBtn;
         startBtn.alt = "Click to Play";
+        startBtn.innerHTML = "Click to Play";
         startBtn.style.zIndex = 100;
-        startBtn.style.width = setWidth + "px";
-        startBtn.style.left = (width - setWidth) / 2 + "px";
-        startBtn.style.bottom = "30px";
         startBtn.style.cursor = "pointer";
         startBtn.style.position = "absolute";
         startBtn.style.top = "46%";
-        startBtn.style.left = (width - 160) / 2 + "px";
+        startBtn.style.bottom = "auto";
+        var horizontalP = (width - 194)/2 + "px";
+        console.log(horizontalP);
+        startBtn.style.left = horizontalP;
+        startBtn.style.right = horizontalP;
         startBtn.style.textAlign = "center";
         startBtn.style.fontSize = "24px";
         startBtn.style.fontWeight = "600";
-        startBtn.innerHTML = "Click to Play";
         startBtn.style.padding = "12px";
-        startBtn.style.background = color;
         startBtn.style.borderRadius = "12px";
         startBtn.style.border = "2px solid " + rgb2hex(color);
+        startBtn.style.background = color;
+        startBtn.style.color = "black";
         if (toMute) {
             thv.appendChild(startBtn);
         } else {
